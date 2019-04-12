@@ -3,7 +3,6 @@ from time import sleep
 from statistics import mean
 from types import FunctionType
 import keyboard
-"coś mi się tu nie podoba"
 
 class Car(object):
 	"""docstring forP Car"""
