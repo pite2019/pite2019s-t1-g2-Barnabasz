@@ -1,40 +1,92 @@
-class Car:
-	"""docstring for Car"""
-	def __init__(self, wheel_angle = 0, speed = 0):
-		self.wheel_angle = wheel_angle
+#!/usr/bin/env python3
+from time import sleep
+from statistics import mean
+from types import FunctionType
+import keyboard
+"coś mi się tu nie podoba"
+
+class Car(object):
+	"""docstring forP Car"""
+	def __init__(self, speed = 0, wheel_angle = 0):
+		super(Car, self).__init__()
 		self.speed = speed
-		self.engineStatus = False
-		self.seconds = 0
-	def loop(self):
-		while self.seconds < 200:
-			self.seconds += 1
-			self.speed -= 1
-			self.wheel_angle = -1
-			print("speed = {}".format(self.speed))
-			print("wheel_angle = {}".format(self.wheel_angle))
-	def startEngine(self, time):
-		if self.engineStatus == False:
-			print("WRRRR (on {}sec)".format(time))
+		self.wheel_angle = wheel_angle
+		self.stop = False
+		self.time = 0
+		self.events = {}
+
+	def spedEndAngle(self) :
+		if self.speed  > 4 :
+			self.speed -= 5
 		else:
-			print("<engine is already running>")
-	def stopEngine(self, time):
-		if self.engineStatus == False:
-			print("<engine is not running>".format(time))
+			self.speed = 0
+		if self.wheel_angle > 4 :q
+			self.wheel_angle -= 5
+		elif self.wheel_angle < -4 :
+			self.wheel_angle -= 5
+		else :
+			self.wheel_angle = 0
+	
+	def timer(self):
+		for _ in range(100):
+			if keyboard.is_pressed('q'):
+				return False
+			elif keyboard.is_pressed('a'):
+				self.addEvent()
+			sleep(0.01)
 		else:
-			print("UUUuum (on {}sec)".format(time))
-	def obsticleHandler(self, time):
-		pass
-	def act(self, event):
-		time = event[1]
-		event = event[0]
-		if event == 'stat the engine' :
-			self.startEngine(time)
-		elif event == 'stop the engine' :
-			self.stopEngine(time)
-		elif event == 'obsticle' :
-			self.obsticleHandler(time)
+			self.time+=1
+	def turnLeft(self) :
+		self.wheel_angle += -50
+	def turnRight(self) :
+		self.wheel_angle += +50
+	def startEngine(self) :
+		if self.engine == False :
+			print("Wrmmmmm")
+			self.engine = False
+		else :
+			print("Engine is already running")
+	def stopEngine(self) :
+		if self.engine == True :
+			print("YYyyyy")
+			self.engine = False
+		else :
+			print("Engine is not running")
+	def speedUP(self):
+		if self.engine == True :
+			self.speed += 50
+		else :
+			print("Engine is not running")
+	def printEvent(self):
+		if self.time in self.events.keys() :
+			event = self.events[self.time]
+			print("time: {}, speed: {}, wheel angle: {}, event: {}".format(self.time, self.speed, self.wheel_angle, event))
+			if event == "turnLeft" :
+				self.turnLeft()
+			elif event == "turnRight":
+				self.turnRight()
+			elif event == "startEngine":
+				self.startEngine()
+			elif event == "stopEngine" :
+				self.stopEngine()
+		else :
+			print("time: {}, speed: {}, wheel angle: {}".format(self.time, self.speed, self.wheel_angle))
+
+	def infiniteLoop(self):
+		while not self.stop:
+			if keyboard.is_pressed('q'):
+				break
+			self.printEvent()
+			self.spedEndAngle()
+			self.timer()
 
 
-car1 = Car()
-car1.act(('stat the engine', 10))
-car1.act(('stop the engine', 10))
+	def addEvent(self, event = False):
+		sleep(0.1)
+		if event == False :
+			nazwa = input("podaj nazwę eventu:")
+			czas = input("podaj opuźnienie:")
+			self.events = {self.time+int(czas):nazwa}
+car1 = Car(50, 32)
+car1.addEvent(("coś", 1))
+car1.infiniteLoop()
